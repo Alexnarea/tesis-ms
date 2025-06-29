@@ -1,40 +1,73 @@
 version: '3.8'
 
 services:
-  eureka:
+  eureka-server:
     build:
       context: ./eureka/eureka
       dockerfile: Dockerfile
-    container_name: eureka
+    container_name: eureka-server
     ports:
       - "8761:8761"
     networks:
-      - tesis-net
-
+      - microservices-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
   gateway:
     build:
       context: ./gateway/gateway
       dockerfile: Dockerfile
     container_name: gateway
-    depends_on:
+  
       - eureka
     ports:
       - "8080:8080"
+    depends_on:
+      - eureka-server
     networks:
-      - tesis-net
-
+      - microservices-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
   children-ms:
     build:
       context: ./children-ms
       dockerfile: Dockerfile
     container_name: children-ms
     depends_on:
-      - eureka
-    ports:
-      - "0:8080" 
+      - eureka-server
     networks:
-      - tesis-net
+      - microservices-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ep-soft-smoke-123456.us-east-2.aws.neon.tech/tesis_db?sslmode=require
+      - SPRING_DATASOURCE_USERNAME=
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  evaluations-ms:
+    build:
+      context: ./evaluations-ms
+      dockerfile: Dockerfile
+    container_name: evaluations-ms
+    depends_on:
+      - eureka-server
+    networks:
+      - microservices-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ep-soft-smoke-123456.us-east-2.aws.neon.tech/tesis_db?sslmode=require
+      - SPRING_DATASOURCE_USERNAME=
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
 
 networks:
-  tesis-net:
+  microservices-network:
     driver: bridge

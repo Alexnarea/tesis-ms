@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS children (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    nui VARCHAR(50) NOT NULL UNIQUE,
+    birthdate DATE NOT NULL,
+    gender VARCHAR(50),
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

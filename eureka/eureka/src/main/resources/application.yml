@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: children-ms  # Cambia según el microservicio
+    name: children-ms 
 
   flyway:
     enabled: true

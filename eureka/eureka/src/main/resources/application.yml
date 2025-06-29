@@ -1,0 +1,35 @@
+server.port=8761
+spring.application.name=eureka-server
+
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+server:
+  port: 0
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: children-ms  # Cambia según el microservicio
+
+  flyway:
+    enabled: true
+    baselineVersion: 1
+    locations: classpath:db/migration
+    sqlMigrationSuffixes: .sql
+    baselineOnMigrate: true
+    sqlMigrationPrefix: V
+    schemas: public
+
+  datasource:
+    url: jdbc:postgresql://ep-soft-smoke-123456.us-east-2.aws.neon.tech/tesis_db?sslmode=require
+    username: victoria_user
+    password: MiContraseñaSegura123
+    driverClassName: org.postgresql.Driver
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

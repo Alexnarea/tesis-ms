@@ -2,10 +2,11 @@ package com.example.eureka
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-
+@EnableEurekaServer
 @SpringBootApplication
-class EurekaApplication
 
-fun main(args: Array<String>) {
-	runApplication<EurekaApplication>(*args)
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
 }

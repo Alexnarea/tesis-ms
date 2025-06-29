@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  eureka:
+    build:
+      context: ./eureka/eureka
+      dockerfile: Dockerfile
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - tesis-net
+
+  gateway:
+    build:
+      context: ./gateway/gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    depends_on:
+      - eureka
+    ports:
+      - "8080:8080"
+    networks:
+      - tesis-net
+
+  children-ms:
+    build:
+      context: ./children-ms
+      dockerfile: Dockerfile
+    container_name: children-ms
+    depends_on:
+      - eureka
+    ports:
+      - "0:8080" 
+    networks:
+      - tesis-net
+
+networks:
+  tesis-net:
+    driver: bridge

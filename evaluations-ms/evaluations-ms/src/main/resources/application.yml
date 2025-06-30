@@ -22,11 +22,6 @@ spring:
     sql-migration-prefix: V
     schemas: public
 
-  jpa:
-    hibernate:
-      ddl-auto: update   # o validate si quieres solo validar el esquema
-    show-sql: true
-
   cloud:
     loadbalancer:
       ribbon:

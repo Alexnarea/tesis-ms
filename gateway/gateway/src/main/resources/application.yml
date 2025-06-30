@@ -7,27 +7,24 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: children-ms
-          uri: lb://children-ms
-          predicates:
-            - Path=/children/**
-
-        - id: evaluations-ms
-          uri: lb://evaluations-ms
-          predicates:
-            - Path=/evaluations/**
-
-    loadbalancer:
-      ribbon:
-        enabled: false
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: children-ms
+              uri: lb://CHILDREN-MS
+              predicates:
+                - Path=/children/**
+            - id: evaluations-ms
+              uri: lb://EVALUATIONS-MS
+              predicates:
+                - Path=/evaluations/**
 
 eureka:
-  instance:
-    instance-id: ${spring.application.name}:${server.port}
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}

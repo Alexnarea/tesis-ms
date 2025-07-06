@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class EvaluationsService {
@@ -97,8 +98,7 @@ class EvaluationsService {
     @Transactional
     fun save(dto: EvaluationsDto): EvaluationsDto {
         val entity = evaluationsMapper.toEntity(dto)
-        entity.childrenId = dto.childrenId
-        entity.evaluatorId = dto.evaluatorId
+        entity.applicationDate = LocalDateTime.now()
         val saved = evaluationsRepository.save(entity)
         return evaluationsMapper.toEvaluationsDto(saved)
     }

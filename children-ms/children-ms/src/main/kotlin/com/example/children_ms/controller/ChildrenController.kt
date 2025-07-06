@@ -1,6 +1,7 @@
 package com.example.children_ms.controller
 
 import com.example.children_ms.dto.ChildrenDto
+import com.example.children_ms.dto.ChildrenWithEvaluationsDto
 import com.example.children_ms.response.SuccessResponse
 import com.example.children_ms.service.ChildrenService
 import jakarta.validation.Valid
@@ -26,6 +27,12 @@ class ChildrenController {
     fun findById(@PathVariable id: Long): ResponseEntity<*> {
         val response = childrenService.findById(id)
         return ResponseEntity(SuccessResponse(data = response), HttpStatus.OK)
+    }
+
+    @GetMapping("/with-evaluations")
+    fun findAllWithEvaluations(): ResponseEntity<List<ChildrenWithEvaluationsDto>> {
+        val result = childrenService.findAllWithEvaluations()
+        return ResponseEntity.ok(result)
     }
 
     @PostMapping

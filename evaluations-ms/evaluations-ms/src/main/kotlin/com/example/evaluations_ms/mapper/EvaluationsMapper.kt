@@ -11,7 +11,7 @@ object EvaluationsMapper {
     fun toEntity(evaluationsDto: EvaluationsDto): Evaluations {
         val evaluations = Evaluations()
         evaluations.id = evaluationsDto.id
-        evaluations.applicationDate = evaluationsDto.applicationDate
+        //evaluations.applicationDate = evaluationsDto.applicationDate
         evaluations.chronologicalAgeMonths = evaluationsDto.chronologicalAgeMonths
         evaluations.childrenId = evaluationsDto.childrenId
         evaluations.evaluatorId = evaluationsDto.evaluatorId
